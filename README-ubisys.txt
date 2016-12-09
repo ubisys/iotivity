@@ -1,5 +1,5 @@
 ubisys(R) Smart Facility(TM) Adapter for IoTivity
-Copyright(C) 2016 ubisys technoligies GmbH, Düsseldorf, Germany. All rights reserved.
+Copyright(C) 2016 ubisys technologies GmbH, Düsseldorf, Germany. All rights reserved.
 
 Project "Morpheus" provides a piece of software that acts as an adapter between the 
 ubisys Smart Facility Service and the Open Connectivity Foundation's IoTivity project,
