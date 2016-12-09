@@ -1,6 +1,6 @@
 # ubisys® Smart Facility™ Adapter for IoTivity
 
-Copyright© 2016 ubisys technoligies GmbH, Düsseldorf, Germany. All rights reserved.
+Copyright© 2016 ubisys technologies GmbH, Düsseldorf, Germany. All rights reserved.
 
 This project has been sponsored jointly by ubisys technologies GmbH and Qorvo, Inc.
 and is licensed under the Apache License, Version 2.0; You may obtain a copy of the
