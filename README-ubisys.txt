@@ -1,5 +1,5 @@
 ubisys(R) Smart Facility(TM) Adapter for IoTivity
-Copyright(C) 2016 ubisys technoligies GmbH, Düsseldorf, Germany. All rights reserved.
+Copyright(C) 2016 ubisys technoligies GmbH, DÃ¼sseldorf, Germany. All rights reserved.
 
 Project "Morpheus" provides a piece of software that acts as an adapter between the 
 ubisys Smart Facility Service and the Open Connectivity Foundation's IoTivity project,
@@ -27,7 +27,7 @@ Following mappings between ZigBee features and OIC models are supported:
 - OIC Water Sensor ("oic.r.sensor.water") <-> ZigBee IAS Zone Cluster (0x0500), "Water Sensor" (ZoneType 0x002A)
 - OIC Contact Sensor ("oic.r.sensor.contact") <-> ZigBee IAS Zone Cluster (0x0500), "Contact Switch" (ZoneType 0x0015)
 - OIC Motion Sensor ("oic.r.sensor.motion") <-> ZigBee IAS Zone Cluster (0x0500), "Motion Sensor" (ZoneType 0x000D)
-- OIC Fire Sensor ("oic.r.sensor.fire") <-> ZigBee IAS Zone Cluster (0x500), "Fire Sensor" (Zone Type 0x0028)
+- OIC Fire Sensor ("oic.r.sensor.fire") <-> ZigBee IAS Zone Cluster (0x0500), "Fire Sensor" (Zone Type 0x0028)
 
 Implementation details, build instructions and requirements
 -----------------------------------------------------------
@@ -60,9 +60,9 @@ Contact
 -------
 ubisys technologies GmbH
 Am Wehrhahn 45
-40211 Düsseldorf 
-Phone: +49 (211) 54 21 55 – 00
-Fax: +49 (211) 54 21 55 – 99 
+40211 DÃ¼sseldorf 
+Phone: +49 (211) 54 21 55 â€“ 00
+Fax: +49 (211) 54 21 55 â€“ 99 
 info@ubisys.de
 www.ubisys.de
 
