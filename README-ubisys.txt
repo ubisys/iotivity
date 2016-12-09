@@ -42,8 +42,8 @@ is a closed-source library. A C++ 11 compiler is required, e.g. GCC 4.9.3 or abo
 
 Make sure to add libev++ and libfacility for your target platform to the /extlibs/ubisys
 folder, under the respective subfolders, i.e. /include for the headers and /local for 
-the building on the local host (currently no cross-builds supported). In addition, 
-following open-source libraries are required and should be installed on your build system: 
+building on the local host (currently no cross-builds supported). In addition, following
+open-source libraries are required and should be installed on your build system: 
 libuuid, libbsd, libev
 
 Commissioning instructions
