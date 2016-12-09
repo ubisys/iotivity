@@ -1,0 +1,34 @@
+# SConscript for plugins/zigbee_ubisys/libfacility_wrapper/src
+#
+# Copyright(C) 2016 ubisys technologies GmbH, Duesseldorf, Germany.
+# All rights reserved.
+#
+# www.ubisys.de
+# support@ubisys.de
+
+
+import os.path
+Import('env')
+
+src_dir = env.get('SRC_DIR')
+fw_path = os.path.join(src_dir, 'plugins')
+
+env.AppendUnique(CPPPATH = [ os.path.join(fw_path, 'include'),
+                             os.path.join(fw_path, 'include', 'internal'),
+                             os.path.join(fw_path, 'zigbee_ubisys', 'include'),
+                             os.path.join(fw_path, 'zigbee_ubisys', 'libfacility_wrapper', 'include'),
+                             os.path.join(src_dir, 'extlibs', 'ubisys', 'libfacility', 'include'),
+                             ])
+
+fw_src = [
+         os.path.join(src_dir, 'resource', 'c_common', 'oic_malloc', 'src', 'oic_malloc.c'),
+         os.path.join(src_dir, 'resource', 'csdk', 'logger', 'src', 'logger.c'),
+         'NativeProtocolProcessor.cpp', 'FacilitydInterface.cpp',
+         'EvCompactTimerService.cpp'
+         ]
+
+env.AppendUnique(FW_SRC = fw_src)
+
+fwlib = env.StaticLibrary('libfacility_wrapper', env.get('FW_SRC'))
+env.InstallTarget(fwlib, 'libfacility_wrapper')
+env.UserInstallTargetLib(fwlib, 'libfacility_wrapper')

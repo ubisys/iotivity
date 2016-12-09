@@ -13,3 +13,6 @@ Descriptions:
   zigbee_wrapper: This contains an abstraction shim layer to encapsulate our
                   use case for the zigbee-library (ie. the one pulled in to
                   extlibs directory above).
+
+  zigbee_ubisys:  Interface to the ubisys Smart Facility Service / ZigBee 3.0
+                  Stack

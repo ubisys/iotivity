@@ -1,0 +1,32 @@
+# SConscript for extlibs/ubisys
+#
+# Copyright(C) 2016 ubisys technologies GmbH, Duesseldorf, Germany.
+# All rights reserved.
+#
+# www.ubisys.de
+# support@ubisys.de
+
+import os
+import subprocess
+Import('env')
+
+root_dir = env.get('SRC_DIR')
+libfacility_dir = os.path.join(root_dir, 'extlibs','ubisys','libfacility')
+libevpp_dir = os.path.join(root_dir, 'extlibs','ubisys','libev++')
+
+if not os.path.exists(libfacility_dir):
+    print '''
+*********************************** Error: ****************************************
+* Plesae place libfacility into extlibs/ubisys/libfacility                        *
+***********************************************************************************
+ '''
+    Exit(1)
+
+if not os.path.exists(libevpp_dir):
+    print '''
+*********************************** Error: ****************************************
+* Plesae place libev++ into extlibs/ubisys/libev++                                *
+***********************************************************************************
+ '''
+    Exit(1)
+

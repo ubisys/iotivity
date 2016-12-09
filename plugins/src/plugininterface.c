@@ -28,6 +28,7 @@
 #include "plugintranslatortypes.h"
 #include "pluginlist.h"
 #include "zigbee_wrapper.h"
+#include "zigbee_ubisys.h"
 #include "oic_string.h"
 #include "oic_malloc.h"
 #include "ocstack.h"
@@ -97,12 +98,15 @@ OCEntityHandlerResult PluginInterfaceEntityHandler(OCEntityHandlerFlag flag,
         OIC_LOG_V(ERROR, TAG, "Error handling request %u", ehResult);
         PIResource * piResource = NULL;
         result = GetResourceFromHandle(plugin, &piResource, response->resourceHandle);
-        OIC_LOG_V(ERROR, TAG, "Deleting resource \"%s\" because of failed request.", piResource->uri);
-        result = DeleteResource(plugin, piResource);
-        if(result != OC_STACK_OK)
+        if (result == OC_STACK_OK)
         {
-            OIC_LOG_V(ERROR, TAG, "Failed to delete resource after failed request.");
-            ehResult = OC_EH_ERROR;
+            OIC_LOG_V(ERROR, TAG, "Deleting resource \"%s\" because of failed request.", piResource->uri);
+            result = DeleteResource(plugin, piResource);
+            if(result != OC_STACK_OK)
+            {
+                OIC_LOG_V(ERROR, TAG, "Failed to delete resource after failed request.");
+                ehResult = OC_EH_ERROR;
+            }
         }
     }
 
@@ -159,6 +163,7 @@ OCStackResult PIStartPlugin(const char * comPort, PIPluginType pluginType, PIPlu
         return OC_STACK_INVALID_PARAM;
     }
     OCStackResult result = OC_STACK_ERROR;
+
     if (pluginType == PLUGIN_ZIGBEE)
     {
         result = ZigbeeInit(comPort,
@@ -178,6 +183,24 @@ OCStackResult PIStartPlugin(const char * comPort, PIPluginType pluginType, PIPlu
         {
             return result;
         }
+    }
+    else if (pluginType == PLUGIN_ZIGBEE_UBISYS)
+    {
+        result =  ZigbeeUbisysInit(comPort,
+                (PIPlugin_ZigbeeUbisys **) plugin,
+                piNewResourceCB,
+                piObserveNotificationUpdate);
+
+        if (result != OC_STACK_OK)
+        {
+            return result;
+        }
+        if (!*plugin)
+        {
+            return OC_STACK_ERROR;
+        }
+
+        result = AddPlugin((PIPluginBase *)*plugin);
     }
     return result;
 }
@@ -212,6 +235,11 @@ OCStackResult PISetup(PIPlugin * plugin)
             return result;
         }
     }
+    if (((PIPluginBase *)plugin)->type == PLUGIN_ZIGBEE_UBISYS)
+    {
+        // Discovery is handled by facilityd
+        return OC_STACK_OK;
+    }
     return result;
 }
 
@@ -226,6 +254,11 @@ OCStackResult PIProcess(PIPlugin * p_plugin)
     if (plugin->type == PLUGIN_ZIGBEE)
     {
         result = ZigbeeProcess((PIPlugin_Zigbee *)plugin);
+    }
+
+    if (plugin->type == PLUGIN_ZIGBEE_UBISYS)
+    {
+        result = ZigbeeUbisysProcess((PIPlugin_ZigbeeUbisys *)plugin);
     }
     return result;
 }

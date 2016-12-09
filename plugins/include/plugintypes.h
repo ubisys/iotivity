@@ -41,7 +41,8 @@ extern "C" {
 typedef enum
 {
     PLUGIN_UNKNOWN = 0,
-    PLUGIN_ZIGBEE = 1
+    PLUGIN_ZIGBEE = 1,
+    PLUGIN_ZIGBEE_UBISYS = 2,
 
 } PIPluginType;
 

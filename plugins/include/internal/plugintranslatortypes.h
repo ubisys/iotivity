@@ -111,6 +111,16 @@ typedef struct
     PIPluginBase header;
 } PIPlugin_Zigbee;
 
+
+struct PIPlugin_ZigbeeUbisys_Private;
+
+typedef struct
+{
+    PIPluginBase header;
+    struct PIPlugin_ZigbeeUbisys_Private *priv;
+} PIPlugin_ZigbeeUbisys;
+
+
 /**
  * Parameter list for a new OCResource. This will be handed up in the
  * PINewResource callback.
@@ -154,6 +164,17 @@ typedef struct
     char * endpointId;
     char * clusterId;
 } PIResource_Zigbee;
+
+
+struct PIResource_ZigbeeUbisys_Private;
+
+typedef struct
+{
+    PIResourceBase header;
+    struct PIResource_ZigbeeUbisys_Private *priv;
+} PIResource_ZigbeeUbisys;
+
+
 
 #ifdef __cplusplus
 }

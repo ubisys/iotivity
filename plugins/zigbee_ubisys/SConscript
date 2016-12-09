@@ -1,0 +1,16 @@
+# SConscript for plugins/zigbee_ubisys
+#
+# Copyright(C) 2016 ubisys technologies GmbH, Duesseldorf, Germany.
+# All rights reserved.
+#
+# www.ubisys.de
+# support@ubisys.de
+
+import os.path
+Import('env')
+
+env.AppendUnique(CXXFLAGS = ['-D_GLIBCXX_USE_CXX11_ABI=0', '-Wno-reorder', '-Wno-unused-parameter', '-Wno-unknown-pragmas'])
+
+env.SConscript(os.path.join('libfacility_wrapper', 'SConscript'))
+env.SConscript(os.path.join('libfacility_support', 'SConscript'))
+env.SConscript(os.path.join('src', 'SConscript'))

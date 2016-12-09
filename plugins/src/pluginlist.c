@@ -24,6 +24,8 @@
 #include <string.h>
 
 #include "zigbee_wrapper.h"
+#include "zigbee_ubisys.h"
+
 #include <coap/utlist.h>
 #include "oic_malloc.h"
 #include "oic_string.h"
@@ -57,6 +59,10 @@ OCStackResult DeletePlugin(PIPluginBase * plugin)
     if (plugin->type == PLUGIN_ZIGBEE)
     {
         result = ZigbeeStop((PIPlugin_Zigbee *) plugin);
+    }
+    else if (plugin->type == PLUGIN_ZIGBEE_UBISYS)
+    {
+        result = ZigbeeUbisysStop((PIPlugin_ZigbeeUbisys *) plugin);
     }
     return result;
 }
@@ -239,6 +245,11 @@ OCStackResult DeleteResource(PIPluginBase * plugin, PIResourceBase * resource)
         OICFree (((PIResource_Zigbee *)resource)->endpointId);
         OICFree (((PIResource_Zigbee *)resource)->clusterId);
     }
+    else if (plugin->type == PLUGIN_ZIGBEE_UBISYS)
+    {
+        ZigBeeUbisysDeleteResourcePriv(((PIResource_ZigbeeUbisys *)resource)->priv);
+    }
+
     OICFree (resource);
     return OC_STACK_OK;
 }

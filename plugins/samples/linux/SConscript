@@ -64,13 +64,22 @@ elif target_os not in ['arduino']:
 if env.get('SECURED') == '1':
     samples_env.AppendUnique(LIBS = ['mbedtls','mbedx509','mbedcrypto'])
 
+
+samples_env.AppendUnique(LIBPATH = [
+	os.path.join(src_dir, 'extlibs', 'ubisys', 'libfacility', 'local'),
+	os.path.join(src_dir, 'extlibs', 'ubisys', 'libev++', 'local'),
+])
+
+samples_env.AppendUnique(LIBS = ['ev++', 'ev', 'bsd'])
+
+
 samples_env.AppendUnique(CPPDEFINES = ['TB_LOG'])
 
 ######################################################################
 # Source files and Targets
 ######################################################################
 iotivityandzigbeeserver = samples_env.Program('iotivityandzigbeeserver',
-        ['IotivityandZigbeeServer.c'])
+        ['IotivityandZigbeeServer.c', 'force-cxx.cpp'])
 iotivityandzigbeeclient = samples_env.Program('iotivityandzigbeeclient',
         ['IotivityandZigbeeClient.c'])
 
@@ -79,5 +88,3 @@ list_of_samples = [iotivityandzigbeeserver, iotivityandzigbeeclient]
 Alias("samples", list_of_samples)
 
 env.AppendTarget('samples')
-
-

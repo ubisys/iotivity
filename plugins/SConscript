@@ -33,6 +33,8 @@ if target_os not in ['android', 'arduino', 'darwin', 'ios', 'tizen', 'msys_nt', 
 
     SConscript(os.path.join('zigbee_wrapper', 'SConscript'))
 
+    SConscript(os.path.join('zigbee_ubisys', 'SConscript'))
+
     SConscript(os.path.join('src', 'SConscript'))
 
     SConscript(os.path.join('unittests', 'SConscript'))

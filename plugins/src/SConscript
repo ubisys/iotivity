@@ -52,6 +52,7 @@ env.PrependUnique(CPPPATH = [ os.path.join(src_dir, 'resource', 'c_common', 'oic
 env.AppendUnique(CPPPATH = [ os.path.join(pi_path, 'include'),
                              os.path.join(pi_path, 'include', 'internal'),
                              os.path.join(pi_path, 'zigbee_wrapper', 'include'),
+                             os.path.join(pi_path, 'zigbee_ubisys', 'include'),
                              os.path.join(pi_path, 'include', 'internal')
                            ])
 
@@ -66,6 +67,7 @@ env.AppendUnique(RPATH = [env.get('BUILD_DIR')])
 env.AppendUnique(LIBPATH = [env.get('BUILD_DIR')])
 
 env.PrependUnique(LIBS = ['zigbee_wrapper'])
+env.PrependUnique(LIBS = ['zigbee_ubisys', 'facility_wrapper', 'facility', 'facility_support'])
 
 if env.get('LOGGING'):
 	env.AppendUnique(CPPDEFINES = ['TB_LOG'])

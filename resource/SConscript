@@ -38,6 +38,9 @@ if target_os not in ['arduino', 'darwin', 'ios', 'android', 'msys_nt', 'windows'
 # Download (if not already present) & build libcoap
 SConscript('#extlibs/libcoap/SConscript')
 
+# Ensure ubisys dependencies (libfacility) are present
+SConscript('#extlibs/ubisys/SConscript')
+
 # Build C Common dependencies
 SConscript('c_common/SConscript')
 

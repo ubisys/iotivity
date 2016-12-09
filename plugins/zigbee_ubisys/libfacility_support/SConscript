@@ -1,0 +1,12 @@
+# SConscript for plugins/zigbee_ubisys/libfacility_support
+#
+# Copyright(C) 2016 ubisys technologies GmbH, Duesseldorf, Germany.
+# All rights reserved.
+#
+# www.ubisys.de
+# support@ubisys.de
+
+import os.path
+Import('env')
+
+env.SConscript(os.path.join('src', 'SConscript'))

@@ -27,8 +27,16 @@
 
 #define TAG "IoTivityZigbeeServer"
 #define defaultComPort "/dev/ttyUSB0"
-int main()
+
+
+int main(int argc, const char **argv)
 {
+    if (argc != 2)
+    {
+        fprintf(stderr, "Usage: %s host[:port]\n\n", argv[0]);
+        return 1;
+    }
+
     OIC_LOG(INFO, TAG, "Initializing IoTivity...");
     OCStackResult result = OCInit(NULL, 0, OC_SERVER);
     if (result != OC_STACK_OK)
@@ -61,7 +69,7 @@ int main()
     // PIStartPlugin
     PIPlugin* plugin = NULL;
     OIC_LOG(INFO, TAG, "IoTivity Initialized properly, Starting Zigbee Plugin...");
-    result = PIStartPlugin(defaultComPort, PLUGIN_ZIGBEE, &plugin);
+    result = PIStartPlugin(argv[1], PLUGIN_ZIGBEE_UBISYS, &plugin);
     if (result != OC_STACK_OK)
     {
         OIC_LOG_V(ERROR, TAG, "Zigbee Plugin Start Failed: %d", result);

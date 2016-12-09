@@ -1,0 +1,58 @@
+# SConscript for plugins/zigbee_ubisys/src
+#
+# Copyright(C) 2016 ubisys technologies GmbH, Duesseldorf, Germany.
+# All rights reserved.
+#
+# www.ubisys.de
+# support@ubisys.de
+
+import os
+import os.path
+
+Import('env')
+
+target_os = env.get('TARGET_OS')
+src_dir = env.get('SRC_DIR')
+zu_path = os.path.join(src_dir, 'plugins')
+
+
+# Build flags
+
+env.PrependUnique(CPPPATH = [ os.path.join(src_dir, 'resource', 'c_common', 'oic_malloc', 'include'),
+                              os.path.join(src_dir, 'resource', 'c_common', 'oic_string', 'include'),
+                              os.path.join(src_dir, 'resource', 'oc_logger', 'include'),
+                              os.path.join(src_dir, 'resource', 'csdk', 'logger', 'include'),
+                              os.path.join(src_dir, 'resource', 'csdk', 'stack', 'include'),
+                              ])
+env.AppendUnique(CPPPATH = [ os.path.join(zu_path, 'include'),
+                             os.path.join(zu_path, 'include', 'internal'),
+                             os.path.join(zu_path, 'zigbee_ubisys', 'include'),
+                             os.path.join(zu_path, 'zigbee_ubisys', 'libfacility_support', 'include'),
+                             os.path.join(src_dir, 'extlibs', 'ubisys', 'libfacility', 'include'),
+                             os.path.join(src_dir, 'extlibs', 'ubisys', 'libev++', 'include'),
+                             ])
+
+env.AppendUnique(CPPDEFINES = ['WITH_POSIX'])
+
+env.AppendUnique(CXXFLAGS = ['-std=c++0x', '-Wall', '-Wextra', '-Wno-error'])
+env.AppendUnique(RPATH = [env.get('BUILD_DIR')])
+env.AppendUnique(LIBPATH = [env.get('BUILD_DIR')])
+
+if env.get('LOGGING'):
+	env.AppendUnique(CPPDEFINES = ['TB_LOG'])
+
+
+# Source files and targets
+
+
+zu_src = [
+         os.path.join(src_dir, 'resource', 'c_common', 'oic_malloc', 'src', 'oic_malloc.c'),
+         os.path.join(src_dir, 'resource', 'csdk', 'logger', 'src', 'logger.c'),
+	     'zigbee_ubisys.cpp',
+         ]
+
+env.AppendUnique(ZU_SRC = zu_src)
+
+zulib = env.StaticLibrary('zigbee_ubisys', env.get('ZU_SRC'))
+env.InstallTarget(zulib, 'libzigbee_ubisys')
+env.UserInstallTargetLib(zulib, 'libzigbee_ubisys')

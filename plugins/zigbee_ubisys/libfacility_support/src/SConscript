@@ -1,0 +1,35 @@
+# SConscript for plugins/zigbee_ubisys/libfacility_support/src
+#
+# Copyright(C) 2016 ubisys technologies GmbH, Duesseldorf, Germany.
+# All rights reserved.
+#
+# www.ubisys.de
+# support@ubisys.de
+
+
+import os.path
+Import('env')
+
+src_dir = env.get('SRC_DIR')
+fs_path = os.path.join(src_dir, 'plugins')
+
+
+# Source files and targets
+
+env.AppendUnique(CPPPATH = [ os.path.join(fs_path, 'include'),
+                             os.path.join(fs_path, 'include', 'internal'),
+                             os.path.join(fs_path, 'zigbee_ubisys', 'include'),
+                             os.path.join(src_dir, 'extlibs', 'ubisys', 'libfacility', 'include'),
+                             ])
+
+fs_src = [
+         os.path.join(src_dir, 'resource', 'c_common', 'oic_malloc', 'src', 'oic_malloc.c'),
+         os.path.join(src_dir, 'resource', 'csdk', 'logger', 'src', 'logger.c'),
+         'DeviceInformation.cpp',
+         ]
+
+env.AppendUnique(FS_SRC = fs_src)
+
+fslib = env.StaticLibrary('libfacility_support', env.get('FS_SRC'))
+env.InstallTarget(fslib, 'libfacility_support')
+env.UserInstallTargetLib(fslib, 'libfacility_support')
