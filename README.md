@@ -31,7 +31,7 @@ Following mappings between ZigBee features and OIC models are supported:
 - OIC Water Sensor ("oic.r.sensor.water") <-> ZigBee IAS Zone Cluster (0x0500), "Water Sensor" (ZoneType 0x002A)
 - OIC Contact Sensor ("oic.r.sensor.contact") <-> ZigBee IAS Zone Cluster (0x0500), "Contact Switch" (ZoneType 0x0015)
 - OIC Motion Sensor ("oic.r.sensor.motion") <-> ZigBee IAS Zone Cluster (0x0500), "Motion Sensor" (ZoneType 0x000D)
-- OIC Fire Sensor ("oic.r.sensor.fire") <-> ZigBee IAS Zone Cluster (0x500), "Fire Sensor" (Zone Type 0x0028)
+- OIC Fire Sensor ("oic.r.sensor.fire") <-> ZigBee IAS Zone Cluster (0x0500), "Fire Sensor" (Zone Type 0x0028)
 
 ## Implementation details, build instructions and requirements
 The project hosted at https://github.com/ubisys/iotivity is a fork of the official
