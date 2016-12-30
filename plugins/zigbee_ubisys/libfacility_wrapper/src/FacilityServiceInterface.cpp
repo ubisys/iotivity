@@ -1,4 +1,4 @@
-// FacilitydInterface.cpp
+// FacilityServiceInterface.cpp
 //
 // Copyright(C) 2016 ubisys technologies GmbH, Duesseldorf, Germany.
 // All rights reserved.
@@ -61,7 +61,7 @@
 #include "NativeProtocolProcessor.h"
 
 #include "logger.h"
-#include "FacilitydInterface.h"
+#include "FacilityServiceInterface.h"
 
 #include "CompactTimer.h"
 #include "EvCompactTimerService.h"
@@ -84,10 +84,10 @@ class ApplicationImpl;
 
 ////////////////////////////////////////////////////////////////////////
 // DeviceImpl
-// Implementation of FacilitydInterface::Device
+// Implementation of FacilityServiceInterface::Device
 
 class DeviceImpl
-: public FacilitydInterface::Device
+: public FacilityServiceInterface::Device
 {
     public:
         DeviceImpl(Handler &, const std::shared_ptr<CFacilityZigBeeDevice> &);
@@ -99,7 +99,7 @@ class DeviceImpl
     // Overrides
     public:
         std::shared_ptr<CFacilityZigBeeDevice> GetBackedDevice() override;
-        std::map<uint8_t, std::shared_ptr<FacilitydInterface::Application>> GetApplications() override;
+        std::map<uint8_t, std::shared_ptr<FacilityServiceInterface::Application>> GetApplications() override;
 
     private:
         Handler &m_handler;
@@ -112,10 +112,10 @@ class DeviceImpl
 
 ////////////////////////////////////////////////////////////////////////
 // ApplicationImpl
-// Implementation of FacilitydInterface::Application
+// Implementation of FacilityServiceInterface::Application
 
 class ApplicationImpl
-: public FacilitydInterface::Application
+: public FacilityServiceInterface::Application
 {
     public:
         class RegistrationCookieImpl
@@ -191,8 +191,8 @@ class Handler
 : public std::enable_shared_from_this<Handler>
 {
     public:
-        using Delegate = FacilitydInterface::Delegate;
-        using Options = FacilitydInterface::Options;
+        using Delegate = FacilityServiceInterface::Delegate;
+        using Options = FacilityServiceInterface::Options;
 
     public:
         Handler(ev::EventLoop &loop, const Options &opts, Delegate &, ThreadDispatcher &mainThread);
@@ -259,7 +259,7 @@ class Handler
         void HandleInventory(const CFacilityInventory &);
 
     public:
-        void SendZCLCommand(FacilitydInterface::Application &app,
+        void SendZCLCommand(FacilityServiceInterface::Application &app,
                 uint16_t cluster, uint8_t cmd, CPacket &payload);
 
         // Invoked by CFacilityServiceEx, on the facility thread
@@ -274,7 +274,7 @@ class Handler
 
         EvCompactTimerService m_timerService;
 
-        FacilitydInterface::Options m_options;
+        FacilityServiceInterface::Options m_options;
 
         std::shared_ptr<CFacilityService> m_pService;
         std::shared_ptr<CMobileProtocolSession> m_pSession;
@@ -392,9 +392,9 @@ std::shared_ptr<CFacilityZigBeeDevice> DeviceImpl::GetBackedDevice()
 }
 
 
-std::map<uint8_t, std::shared_ptr<FacilitydInterface::Application>> DeviceImpl::GetApplications()
+std::map<uint8_t, std::shared_ptr<FacilityServiceInterface::Application>> DeviceImpl::GetApplications()
 {
-    std::map<uint8_t, std::shared_ptr<FacilitydInterface::Application>> m(m_applications.begin(), m_applications.end());
+    std::map<uint8_t, std::shared_ptr<FacilityServiceInterface::Application>> m(m_applications.begin(), m_applications.end());
 
     return m;
 
@@ -843,7 +843,7 @@ void Handler::HandleInventory(const CFacilityInventory &inv)
 }
 
 
-void Handler::SendZCLCommand(FacilitydInterface::Application &app,
+void Handler::SendZCLCommand(FacilityServiceInterface::Application &app,
         uint16_t cluster, uint8_t cmd, CPacket &payload)
 {
     std::shared_ptr<CMobileProtocolProcessor> pp(m_pService->m_processor);
@@ -895,9 +895,9 @@ void Handler::OnAttributeChanged(CFacilityZigBeeAttribute &attribute)
 
 
 ////////////////////////////////////////////////////////////////////////
-// FacilitydInterface::Impl
+// FacilityServiceInterface::Impl
 
-class FacilitydInterface::Impl
+class FacilityServiceInterface::Impl
 {
     public:
         Impl(const Options &opts, Delegate &d, ThreadDispatcher &mainThread)
@@ -938,24 +938,24 @@ ThreadDispatcher::~ThreadDispatcher() = default;
 
 
 ////////////////////////////////////////////////////////////////////////
-// FacilitydInterface::Application::RegistrationCookie
+// FacilityServiceInterface::Application::RegistrationCookie
 
-FacilitydInterface::Application::RegistrationCookie::~RegistrationCookie() = default;
+FacilityServiceInterface::Application::RegistrationCookie::~RegistrationCookie() = default;
 
 
 ////////////////////////////////////////////////////////////////////////
-// FacilitydInterface
+// FacilityServiceInterface
 
-FacilitydInterface::FacilitydInterface(const Options &opts, Delegate &d, ThreadDispatcher &mainThread)
+FacilityServiceInterface::FacilityServiceInterface(const Options &opts, Delegate &d, ThreadDispatcher &mainThread)
 : m_pImpl(new Impl(opts, d, mainThread))
 {
 }
 
 
-FacilitydInterface::~FacilitydInterface() = default;
+FacilityServiceInterface::~FacilityServiceInterface() = default;
 
 
-void FacilitydInterface::Impl::loop()
+void FacilityServiceInterface::Impl::loop()
 {
     LoadAvailableFacilities();
 

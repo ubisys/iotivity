@@ -44,7 +44,7 @@
 #include <sys/time.h>
 #include <sys/select.h>
 
-#include "FacilitydInterface.h"
+#include "FacilityServiceInterface.h"
 
 #include <CompactFramework.h>
 #include <CompactXML.h>
@@ -89,21 +89,21 @@ namespace {
 // private plugin data
 
 class PIPlugin_ZigbeeUbisys_Private final
-: private FacilitydInterface::Delegate,
+: private FacilityServiceInterface::Delegate,
   private ThreadDispatcher
 {
     public:
         PIPlugin_ZigbeeUbisys_Private(PIPlugin_ZigbeeUbisys *plugin,
-                const FacilitydInterface::Options &options)
+                const FacilityServiceInterface::Options &options)
         : m_plugin(plugin),
           m_facility(options, *this, *this)
         {
         }
 
-    // Overrides: FacilitydInterface::Delegate
+    // Overrides: FacilityServiceInterface::Delegate
     public:
-        void OnDeviceAdded(const std::shared_ptr<FacilitydInterface::Device> &) override;
-        void OnDeviceRemoved(const std::shared_ptr<FacilitydInterface::Device> &) override;
+        void OnDeviceAdded(const std::shared_ptr<FacilityServiceInterface::Device> &) override;
+        void OnDeviceRemoved(const std::shared_ptr<FacilityServiceInterface::Device> &) override;
 
     // Overrides: ThreadDispatcher
     public:
@@ -125,7 +125,7 @@ class PIPlugin_ZigbeeUbisys_Private final
 
     private:
         // The interface class to the facility service
-        FacilitydInterface m_facility;
+        FacilityServiceInterface m_facility;
 
         // Queue of jobs (functions) to execute on the main thread and the associated mutex
         std::mutex m_mutex;
@@ -289,7 +289,7 @@ class ResourceMapping
         // (factory function to instantiate specialized, derived classes of ResourceMapping)
         static PIResource_ZigbeeUbisys* create(PIPlugin_ZigbeeUbisys_Private &,
                 const std::string &uri,
-                const std::shared_ptr<FacilitydInterface::Application> &app,
+                const std::shared_ptr<FacilityServiceInterface::Application> &app,
                 uint16_t cluster);
 
     // Overridables / pure virtual functions
@@ -311,7 +311,7 @@ class ResourceMapping
         static std::unique_ptr<ResourceMapping> instantiate(
                 PIPlugin_ZigbeeUbisys_Private &pd,
                 const std::string &uri,
-                const std::shared_ptr<FacilitydInterface::Application> &app,
+                const std::shared_ptr<FacilityServiceInterface::Application> &app,
                 uint16_t cluster);
 
         // Helper function for the constructor; creates the PIResource_ZigbeeUbisys instance
@@ -341,7 +341,7 @@ class BinarySwitchMapping : public ResourceMapping
         BinarySwitchMapping(
                 PIPlugin_ZigbeeUbisys_Private &p,
                 const std::string &uri,
-                const std::shared_ptr<FacilitydInterface::Application> &app);
+                const std::shared_ptr<FacilityServiceInterface::Application> &app);
 
     // Overrides: ResourceMapping
     public:
@@ -352,8 +352,8 @@ class BinarySwitchMapping : public ResourceMapping
         void OnAttributeChanged(const CFacilityZigBeeAttribute &);
 
     private:
-        std::shared_ptr<FacilitydInterface::Application> m_app;
-        std::unique_ptr<FacilitydInterface::Application::RegistrationCookie> m_cookie;
+        std::shared_ptr<FacilityServiceInterface::Application> m_app;
+        std::unique_ptr<FacilityServiceInterface::Application::RegistrationCookie> m_cookie;
 
         bool m_bValue = false;
         bool m_bValueValid = false;
@@ -363,7 +363,7 @@ class BinarySwitchMapping : public ResourceMapping
 BinarySwitchMapping::BinarySwitchMapping(
         PIPlugin_ZigbeeUbisys_Private &p,
         const std::string &uri,
-        const std::shared_ptr<FacilitydInterface::Application> &app)
+        const std::shared_ptr<FacilityServiceInterface::Application> &app)
 : ResourceMapping(p, uri, OIC_BINARY_SWITCH),
   m_app(app),
   m_cookie(m_app->RegisterAttributeListener(6, std::bind(&BinarySwitchMapping::OnAttributeChanged, this, _1)))
@@ -461,7 +461,7 @@ class IASZoneMapping : public ResourceMapping
         IASZoneMapping(
                 PIPlugin_ZigbeeUbisys_Private &p,
                 const std::string &uri,
-                const std::shared_ptr<FacilitydInterface::Application> &app);
+                const std::shared_ptr<FacilityServiceInterface::Application> &app);
 
     // Overrides: ResourceMapping
     public:
@@ -470,12 +470,12 @@ class IASZoneMapping : public ResourceMapping
 
     private:
         void OnAttributeChanged(const CFacilityZigBeeAttribute &);
-        static const char *mapResourceType(const std::shared_ptr<FacilitydInterface::Application> &app);
-        static uint16_t getAlarmMask(const std::shared_ptr<FacilitydInterface::Application> &app);
+        static const char *mapResourceType(const std::shared_ptr<FacilityServiceInterface::Application> &app);
+        static uint16_t getAlarmMask(const std::shared_ptr<FacilityServiceInterface::Application> &app);
 
     private:
-        std::shared_ptr<FacilitydInterface::Application> m_app;
-        std::unique_ptr<FacilitydInterface::Application::RegistrationCookie> m_cookie;
+        std::shared_ptr<FacilityServiceInterface::Application> m_app;
+        std::unique_ptr<FacilityServiceInterface::Application::RegistrationCookie> m_cookie;
 
         // Indicates which bits to evaluate of the ZoneStatus attribute
         uint16_t m_nAlarmMask;
@@ -488,7 +488,7 @@ class IASZoneMapping : public ResourceMapping
 IASZoneMapping::IASZoneMapping(
         PIPlugin_ZigbeeUbisys_Private &p,
         const std::string &uri,
-        const std::shared_ptr<FacilitydInterface::Application> &app)
+        const std::shared_ptr<FacilityServiceInterface::Application> &app)
 : ResourceMapping(p, uri, mapResourceType(app)),
   m_app(app),
   m_cookie(m_app->RegisterAttributeListener(0x500, std::bind(&IASZoneMapping::OnAttributeChanged, this, _1))),
@@ -557,7 +557,7 @@ void IASZoneMapping::OnAttributeChanged(const CFacilityZigBeeAttribute &attr)
 
 
 const char*
-IASZoneMapping::mapResourceType( const std::shared_ptr<FacilitydInterface::Application> &app)
+IASZoneMapping::mapResourceType( const std::shared_ptr<FacilityServiceInterface::Application> &app)
 {
     std::shared_ptr<CFacilityZigBeeApplication> bapp = app->GetBackedApplication();
     auto i = bapp->m_inbound.find(0x500);
@@ -582,7 +582,7 @@ IASZoneMapping::mapResourceType( const std::shared_ptr<FacilitydInterface::Appli
     }
 }
 
-uint16_t IASZoneMapping::getAlarmMask(const std::shared_ptr<FacilitydInterface::Application> &app)
+uint16_t IASZoneMapping::getAlarmMask(const std::shared_ptr<FacilityServiceInterface::Application> &app)
 {
     std::shared_ptr<CFacilityZigBeeApplication> bapp = app->GetBackedApplication();
     auto i = bapp->m_inbound.find(0x500);
@@ -634,7 +634,7 @@ const char* ResourceMapping::GetResourceType()
 PIResource_ZigbeeUbisys* ResourceMapping::create(
         PIPlugin_ZigbeeUbisys_Private &pd,
         const std::string &uri,
-        const std::shared_ptr<FacilitydInterface::Application> &app,
+        const std::shared_ptr<FacilityServiceInterface::Application> &app,
         uint16_t cluster)
 {
     // Try to instantiate the mapping
@@ -661,7 +661,7 @@ PIResource_ZigbeeUbisys* ResourceMapping::create(
 std::unique_ptr<ResourceMapping> ResourceMapping::instantiate(
         PIPlugin_ZigbeeUbisys_Private &pd,
         const std::string &uri,
-        const std::shared_ptr<FacilitydInterface::Application> &app,
+        const std::shared_ptr<FacilityServiceInterface::Application> &app,
         uint16_t cluster)
 {
     using UR = std::unique_ptr<ResourceMapping>;
@@ -750,7 +750,7 @@ void PIPlugin_ZigbeeUbisys_Private::RunQueuedJobs()
 }
 
 
-void PIPlugin_ZigbeeUbisys_Private::OnDeviceAdded(const std::shared_ptr<FacilitydInterface::Device> &dev)
+void PIPlugin_ZigbeeUbisys_Private::OnDeviceAdded(const std::shared_ptr<FacilityServiceInterface::Device> &dev)
 {
     uint64_t addr64 = dev->GetBackedDevice()->m_address.m_qwExtended;
     OIC_LOG_V(INFO, TAG, "Add resources for %016" PRIx64, addr64);
@@ -760,7 +760,7 @@ void PIPlugin_ZigbeeUbisys_Private::OnDeviceAdded(const std::shared_ptr<Facility
     for (const auto &p : apps)
     {
         uint8_t ep = p.first;
-        const std::shared_ptr<FacilitydInterface::Application> &app = p.second;
+        const std::shared_ptr<FacilityServiceInterface::Application> &app = p.second;
 
         OIC_LOG_V(INFO, TAG, "Endpoint %u", ep);
 
@@ -795,7 +795,7 @@ void PIPlugin_ZigbeeUbisys_Private::OnDeviceAdded(const std::shared_ptr<Facility
 }
 
 
-void PIPlugin_ZigbeeUbisys_Private::OnDeviceRemoved(const std::shared_ptr<FacilitydInterface::Device> &)
+void PIPlugin_ZigbeeUbisys_Private::OnDeviceRemoved(const std::shared_ptr<FacilityServiceInterface::Device> &)
 {
     // Not implemented yet
 }
@@ -903,7 +903,7 @@ OCStackResult ZigbeeUbisysInit(const char *args, PIPlugin_ZigbeeUbisys ** plugin
     // Parse args:
     // Either simply a hostname or a hostname:port combination
 
-    FacilitydInterface::Options options;
+    FacilityServiceInterface::Options options;
     options.m_nPort = 8888;
 
     const char *pos = strchr(args, ':');

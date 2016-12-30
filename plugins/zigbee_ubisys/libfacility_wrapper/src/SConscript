@@ -23,7 +23,7 @@ env.AppendUnique(CPPPATH = [ os.path.join(fw_path, 'include'),
 fw_src = [
          os.path.join(src_dir, 'resource', 'c_common', 'oic_malloc', 'src', 'oic_malloc.c'),
          os.path.join(src_dir, 'resource', 'csdk', 'logger', 'src', 'logger.c'),
-         'NativeProtocolProcessor.cpp', 'FacilitydInterface.cpp',
+         'NativeProtocolProcessor.cpp', 'FacilityServiceInterface.cpp',
          'EvCompactTimerService.cpp'
          ]
 

@@ -1,4 +1,4 @@
-// FacilitydInterface.h
+// FacilityServiceInterface.h
 //
 // Copyright(C) 2016 ubisys technologies GmbH, Duesseldorf, Germany.
 // All rights reserved.
@@ -14,8 +14,8 @@
  * to handle connection setup etc.
  */
 
-#ifndef PLUGINS_ZIGBEE_UBISYS_FACILITYDINTERFACE_H_
-#define PLUGINS_ZIGBEE_UBISYS_FACILITYDINTERFACE_H_
+#ifndef PLUGINS_ZIGBEE_UBISYS_FACILITYSERVICEINTERFACE_H_
+#define PLUGINS_ZIGBEE_UBISYS_FACILITYSERVICEINTERFACE_H_
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -43,9 +43,9 @@ class ThreadDispatcher
 
 
 ////////////////////////////////////////////////////////////////////////
-// FacilitydInterface
+// FacilityServiceInterface
 
-class FacilitydInterface
+class FacilityServiceInterface
 {
     public:
         // Options
@@ -107,12 +107,12 @@ class FacilitydInterface
         };
 
     public:
-        FacilitydInterface(const Options &, Delegate &, ThreadDispatcher &mainThread);
-        ~FacilitydInterface();
+        FacilityServiceInterface(const Options &, Delegate &, ThreadDispatcher &mainThread);
+        ~FacilityServiceInterface();
 
     private:
         class Impl;
         std::unique_ptr<Impl> m_pImpl;
 };
 
-#endif /* PLUGINS_ZIGBEE_UBISYS_FACILITYDINTERFACE_H_ */
+#endif /* PLUGINS_ZIGBEE_UBISYS_FACILITYSERVICEINTERFACE_H_ */
