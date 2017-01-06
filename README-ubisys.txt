@@ -31,20 +31,56 @@ Following mappings between ZigBee features and OIC models are supported:
 
 Implementation details, build instructions and requirements
 -----------------------------------------------------------
+
 The project hosted at https://github.com/ubisys/iotivity is a fork of the official
 IoTivity 1.2 release, available at https://github.com/iotivity/iotivity. The changes
 made by ubisys affect IotivityandZigBeeServer, such that it utilizes the new ubisys
 ZigBee 3.0 plug-in for IoTivity, which is a drop-in replacement for zigbee_wrapper.
 For testing, you could use IotivityandZigBeeClient, which remained unmodified.
 
-This project heavily relies on the ubisys Smart Facility Service C++ Client SDK, which
-is a closed-source library. A C++ 11 compiler is required, e.g. GCC 4.9.3 or above.
+Notice that unit tests for the ubisys ZigBee plugin are currently not supported and
+attempting to build them would fail. It is recommended to just build the server and
+client, as described below.
 
-Make sure to add libev++ and libfacility for your target platform to the /extlibs/ubisys
-folder, under the respective subfolders, i.e. /include for the headers and /local for 
-building on the local host (currently no cross-builds supported). In addition, following
-open-source libraries are required and should be installed on your build system: 
-libuuid, libbsd, libev
+This project heavily relies on the ubisys Smart Facility Service C++ Client SDK,
+which is a closed-source library. A C++ 11 compiler is required, e.g. GCC 4.9.3 or
+above.
+
+Building
+--------
+
+1. Make sure open-source libraries are installed
+
+Following open-source libraries are required and should be installed on your build
+system: libuuid, libbsd, libev. They can typically be installed using your 
+distribution's package manager, for example on an ubuntu 14.04.5 LTS, use the
+following command:
+
+> sudo apt-get install libuuid1 libbsd0 libev4
+
+2. Copy dependencies
+
+Make sure to add libev++ and libfacility for your target platform to the
+/extlibs/ubisys folder, under the respective subfolders, i.e. /include for the
+headers and /local for building on the local host (currently no cross-builds supported).
+
+3. Build the debug version of client and server
+
+Make sure the current working directory is the iotivity top-level directory. Then run 
+scons. Notice the target string depends on your specific architecture (x86_64 in this
+case) and build configuration (debug build in this case):
+
+> scons out/linux/x86_64/debug/plugins/samples/linux/iotivityandzigbeeserver RELEASE=false
+> scons out/linux/x86_64/debug/plugins/samples/linux/iotivityandzigbeeclient RELEASE=false
+
+4. Build the release version of client and server
+
+Make sure the current working directory is the iotivity top-level directory. Then run
+scons. Notice the target string depends on your specific architecture (x86_64 in this
+case) and build configuration (release build in this case):
+
+> scons out/linux/x86_64/release/plugins/samples/linux/iotivityandzigbeeserver
+> scons out/linux/x86_64/release/plugins/samples/linux/iotivityandzigbeeclient
 
 Commissioning instructions
 --------------------------
