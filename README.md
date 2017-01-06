@@ -51,7 +51,7 @@ is a closed-source library. A C++ 11 compiler is required, e.g. GCC 4.9.3 or abo
 #### 1. Make sure open-source libraries are installed
 Following open-source libraries are required and should be installed on your
 build system: `libuuid`, `libbsd`, `libev`
-They can typically be installed using your distributions package manager, for
+They can typically be installed using your distribution's package manager, for
 example on an ubuntu 14.04.5 LTS, use the following commands:
 ```
 sudo apt-get install libuuid1 libbsd0 libev4
