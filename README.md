@@ -57,9 +57,10 @@ example on an ubuntu 14.04.5 LTS, use the following commands:
 sudo apt-get install libuuid1 libbsd0 libev4
 ```
 #### 2. Copy dependencies 
-Make sure to add libev++ and libfacility for your target platform to the /extlibs/ubisys
-folder, under the respective subfolders, i.e. /include for the headers and /local for 
-building on the local host (currently no cross-builds supported).
+Make sure to add `libev++` and `libfacility` for your target platform to the
+`/extlibs/ubisys` folder, under the respective subfolders, i.e. `/include` for the
+headers and `/local` for building on the local host (currently no cross-builds
+supported).
 #### 3. Build the debug version of client and server
 Make sure the current working directory is the iotivity top-level directory. Then run
 scons. Notice the target string depends on your specific architecture (x86_64 in this
