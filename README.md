@@ -77,7 +77,16 @@ case) and build configuration (release build in this case):
 scons out/linux/x86_64/release/plugins/samples/linux/iotivityandzigbeeserver
 scons out/linux/x86_64/release/plugins/samples/linux/iotivityandzigbeeclient
 ```
-
+#### Addtional hints for targetting the ARM architecture
+Make sure to specify `TARGET_ARCH=arm` and to use `arm` instead of `x86_64` in the 
+target path, i.e.
+```
+scons out/linux/arm/debug/plugins/samples/linux/iotivityandzigbeeserver TARGET_ARCH=arm RELEASE=false
+```
+#### Trouble-shooting
+If you have problems buidling, first try to build vanilla IoTivity on your build
+system. Once that works, follow the instructions above to build the ubisys ZigBee
+plug-in.
 ## Commissioning instructions
 Currently, the PIN code is hard-coded as "0000", so you need to allow enrollment on
 the Facility Service (for ubisys G1 use the web interface, as a platform vendor use
