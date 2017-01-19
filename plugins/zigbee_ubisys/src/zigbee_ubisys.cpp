@@ -1006,7 +1006,6 @@ static OCEntityHandlerResult ProcessEHRequest(PIPluginBase * plugin,
                 for (auto &p : values)
                     newValues[p.first] = std::move(p.second);
 
-                OCRepPayloadDestroy(*payload);
                 *payload = createPayload(newValues);
             }
             break;
