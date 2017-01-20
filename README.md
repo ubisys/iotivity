@@ -61,6 +61,11 @@ Make sure to add `libev++` and `libfacility` for your target platform to the
 `/extlibs/ubisys` folder, under the respective subfolders, i.e. `/include` for the
 headers and `/local` for building on the local host (currently no cross-builds
 supported).
+You might also have to add additional external dependencies, as required by
+vanilla IoTivity. Then you will be prompted to install specific packages, e.g.
+```
+git clone https://github.com/01org/tinycbor.git extlibs/tinycbor/tinycbor -b v0.4
+```
 #### 3. Build the debug version of client and server
 Make sure the current working directory is the iotivity top-level directory. Then run
 scons. Notice the target string depends on your specific architecture (x86_64 in this
