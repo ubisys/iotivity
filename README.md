@@ -103,17 +103,11 @@ hostname[:port] for the facility service instance on the command line.
 
 ## Contact
 ubisys technologies GmbH
-
-Am Wehrhahn 45
-
-40211 Düsseldorf
-
+Neumannstraße 10
+40235 Düsseldorf
 Phone: +49 (211) 54 21 55 – 00
-
 Fax: +49 (211) 54 21 55 – 99
-
 info@ubisys.de
-
 www.ubisys.de
 
 ## Support
